@@ -1,0 +1,612 @@
+Dhan sir Django Tutorials from class and Videos:
+
+
+
+Video no 1: Installation and Introduction:
+...................................................................................................
+1) Installation:
+
+1) GO to djangoproject.com and click download 
+2) TO install globally pip install wala link copy and paste and run
+
+....................................................................................................
+
+2) To create new Django project:
+
+
+1) Make New Folder "DjangoApplication"
+2) Open that folder and click on location bar type "cmd" command prompt kholne
+3) Create Virtual Environment "PythonVE" >>>>> python -m venv PythonVE
+4) Activate Virtual Environment: PythonVE\Scripts\activate
+5) Install all required packages in Virutal Environment:
+	a) django
+	b) virtualenv
+	c) ckeditor: pip install django-ckeditor
+	d) pillow
+	e) Crispy form: pip install django-crispy-forms
+6) Create requirements.txt file: pip freeze>requirements.txt
+7) start django project: django-admin startproject MainHub
+8) store secret key in separate python file: 
+	i) open the project
+	ii) create secret.py in MainHub directory beside setting.py
+	iii) secret.py ma paste secret key in setting.py : KEY = 'ygfd60e33%5yu2qj&zj57=5gf98s3e=l@thpd2)s0rwvt41ok9'
+	iv) setting.py ma :
+		from .secret import KEY
+		SECRET_KEY = KEY
+9) open project folder... create .gitignore.txt text file and ignore two files:
+/PythonVE/
+MainHub/MainHub/secret.py
+
+then, rename the gitignore file:  ren .gitignore.txt .gitignore
+
+10) github ma upload this repository:
+	i) create repository with same name as project
+	ii) tya deko instructions follow: git init
+	iii) git add .
+	iv) git commit -m "first commit"
+	v) git remote add origin https://github.com/bishalpokharel325/DjangoApplication.git
+	vi) git push -u origin master
+
+
+......................................................................................
+3) Create a New Application:
+
+1) Open Pycharm and open this project
+2) in terminal: cd MainHub
+3) py manage.py startapp news
+4) in setting.py register all apps:
+	i) 'ckeditor'
+	ii) 'news.apps.NewsConfig'
+	iii) 'crispy_forms'
+5) test by applying: py manage.py runserver ... server should run smoothly
+.......................................................................................
+
+4) Initiate Urls and views:
+
+	i) MainHub/urls:
+
+		from django.contrib import admin
+		from django.urls import path,include
+
+			urlpatterns = [
+    			path('admin/', admin.site.urls),
+    			path('', include('news.urls'))
+			]
+
+	ii) make new urls.py in news folder:
+
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.index,name='home'),
+    path('home', views.index,name='home'),
+    path('about', views.about,name='about'),
+    path('contact', views.contact,name='contact'),
+    path('register', views.register,name='register'),
+    path('login', views.login,name='login'),
+]
+
+	iii) views.py
+		
+		from django.shortcuts import render
+
+		# Create your views here.
+		def index(request):
+    			return render(request,"frontend/pages/home.html")
+		def about(request):
+    			return render(request,"frontend/pages/about.html")
+		def contact(request):
+    			return render(request,"frontend/pages/contact.html")
+		def register(request):
+    			return render(request,"frontend/pages/register.html")
+		def login(request):
+    			return render(request,"frontend/pages/login.html")
+
+.............................................................................................
+5) Templates and folder creation:
+
+i) make a new folder "templates" in app folder news folder
+ii) register 'templates' in setting.py
+iii) create folder and html structure as follow:
+
+
+
+(news) ...... (templates)....(frontend)...........(master,pages,layout)
+(master)...... master.html
+(pages) home, about, contact, register, login
+(layout) header, footer, navbar
+
+iv) header.html ma upto <body> samma rakhne without any spaces
+v) footer.html ma upto </body> dekhi below rakhne without any spaces
+vi) navbar.html ma:
+
+<a href="{% url 'home' %}"> home</a>
+<a href="{% url 'about' %}"> about</a>
+<a href="{% url 'contact' %}"> contact</a>
+<a href="{% url 'login' %}"> login</a>
+<a href="{% url 'register' %}"> register</a>
+
+
+vii) master.html
+
+{% include 'frontend/layout/header.html' %}
+{% include 'frontend/layout/navbar.html' %}
+{% block content%}
+{% endblock %}
+{% include 'frontend/layout/footer.html' %}
+
+viii) home, about, contact, login, register.html ma
+
+{% extends 'frontend/master/master.html' %}
+{% block content%}
+<h1> Hello Home page</h1>
+{% endblock %}
+..............................................................................
+
+
+6) Loading STATIC css,image and js files:
+
+CSS and JS files:
+
+i) make a new folder in news named 'static'>>> style.css and body background blue
+ii) header.html ma 
+	html mathi {% load static %}
+iii) link ma: <link rel="stylesheet" href="{% static 'style.css' %}">
+
+
+..................................................................
+
+7) Creating Super user and editing Admin page:
+
+1) py manage.py migrate
+2) py manage.py createsuperuser add username and pw email
+3) urls.py from parent folder ma:
+
+admin.site.site_header="Django Header"
+admin.site.site_title="Title "
+admin.site.index_title="Index Title"
+
+4) runserver.. open /admin then login to superuser account there u can see the results
+
+.....................................................................
+
+Create MODEL for dynamic Content:
+
+8) model.py ma:
+
+from ckeditor.fields import RichTextField
+# Create your models here.
+class Slider(models.Model):
+    title=models.CharField(max_length=150,unique=True)
+    description=RichTextField()
+    image=models.ImageField(upload_to="Slider")
+    status=models.BooleanField(default=0)
+    created_at=models.DateField()
+    slug=models.CharField(max_length=150,unique=True)
+
+#name of object as title
+def _str_(self):
+	return self.title
+
+
+2) Register the slider in admin.py:
+
+# admin ma list jasta ko tyestai dekhauna
+
+from .models import Slider
+# Register your models here.
+admin.site.register(Slider)
+
+3) py manage.py makemigrations
+	py manage.py migrate
+
+
+4) ramro banauna date heru serach filter garne banauna
+
+from .models import Slider
+# Register your models here.
+# admin.site.register(Slider)
+@admin.register(Slider)
+class adminSlider(admin.ModelAdmin):
+    list_display = ['title','status']
+    search_fields = ['title','status']
+    date_hierarchy = 'created_at'
+    prepopulated_fields = {'slug':['title']}
+    list_per_page = 2
+.......................................................................
+
+9) Slider ko data display in the page:
+
+1) views.py ma 
+
+from .models import Slider
+
+# Create your views here.
+def index(request):
+    data={'sliderData':Slider.objects.all()}
+    return render(request,"frontend/pages/home.html",data)
+
+
+2) home.html ma
+
+{% for slider in sliderData %}
+{{slider.title}}
+{{slider.description}}
+<img src="{{slider.image.url}}">
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3) yo django8pm chai main hub ho.... hami run garna chutai command use garxau
+   hub ho.. yesko aru branches heru huncha
+4) tyo manage.py vanne file cha... documentation is most importaant vanera ni sadhya nahune kura
+ho documentation padnai parxa hamle
+5) go to documentation and get started>> tya manage.py le k garxa deko cha
+i) mysite, manage.py, mysite/__init__.py,mysite/settings.py,mysite/urls.py,mysite/asgi.py,mysite/wsgi.py
+6) MTV: dekhine kura view.... model and template
+7) manage.py chune kura haina tyo nachalaune
+8) server start garna:
+
+python manage.py runserver
+
+9)sqlite vane file automatically aucha: aba server run vayo so
+127.0.0.1:8000 ma run vayo
+tyo site ma jane browser ma
+
+10) aja aru file heru chodum: setting ra url vanne file ho aile bujne
+
+11) setting file ma: 
+i) import garyo ra path rakhyoo 
+ii) harek programming ma security key huncha csrf in php .... debug mode true hunchalive majada false huncha
+iii) allowed host server ma jada matra huncha
+iv) installer app: k k install chan vanera dekhaucha k k automatically chalisakyo???
+naya project banauda add garne
+v) middle ware vaneko middle mabascha request ra response ko bich ma basera kam garxa
+form verification heru
+vi) template database heru password validation ko kura aucha langauage aucha static files heru tya rakhne image heru
+
+12) url pattern: url: uniform resource locator, request garda k dekhaune vanne kura ho url
+i) url.py ma jane: tya admin vanne
+ii) /admin garda admin ko site load vayo..
+iii) kasai kasai le tye file banauchan tyo nagarne chutai banaune
+
+13) server run garna 
+python manage.py runserver
+
+migration heru aile confuse huncha
+
+
+14)  hamile applications gareko chaina 
+15) Web application chai banauna k garne???? documentation ma herau
+/tutorial01 mai deko cha kasari garne vanera
+
+16) to start new application:
+
+i) parent ko folder (not django ko folder) ma jane
+ii) py manage.py startapp news
+iii) news vitra migration huncha tya model admin init heru huncha
+iv) auta kura confuse nagarne.. jaile application banauda register garnu parxa
+
+17) to register new application:
+
+i) aru le chai setting ma gayera "news" garxa... installed app ma setting ma garxa aru herule
+ii) but practise tyesto nagarne.. ma chai k vanchu vane
+iii) apps vane file ma class cha newsConfig(AppConfig): garda 'news' aucha re
+iv) Installed app vitra yesto lekhne:
+"news.apps.NewsConfig' vannu ra news vannu autai kura ho yesari garda ramro manincha
+
+18) command heru aile samma: 
+i) project banauna: django-admin startproject django8pm
+ii) server run garna: py manage.py runproject
+iii) new app create garna py manage.py startapp news and register in setting>installed app
+iv) register garna: go to setting>intalled app> "news.apps.NewsConfig" yo vannu ra "news" matra vannu autai ho
+
+
+19) aba garnu parne kura URL:
+view ko kura herne:
+20) NEXT sTEPS:
+
+i) django8pm ko folder ko urls ma from django.urls import path and include ni thapne
+ii) urlpatterns = [
+    path("",include("news.urls"))]
+path("",include("news.urls")) yo thapne 
+iii) make new file urls.py in the new app we created
+tyo file ma this code
+
+from django.urls import path
+from . import views
+urlpatterns=[
+    path("",views.index)
+]
+
+iv) views.py ma yesto lekhne:
+
+from django.shortcuts import render,HttpResponse
+
+# Create your views here.
+def index(request):
+    return HttpResponse("<h1>Hello Django Project</h1>")
+
+
+
+v) main system django8pm chalaudainau tyo hub matra ho hami news ko chai chalauchau
+
+vi) /home handa index page kholna
+path("home",views.index)
+
+vii) /about handa about page dekhauna:
+
+path("about",about.index)
+
+then view ma function banaune:
+def index(request):
+return HttpResponse("<h1> hello About Us </h1>")
+
+
+
+
+urls vanne documentation padera aune:::
+
+
+
+
+STATIC:
+1)))))))1st step in setting.py in parent
+
+STATIC_URL = '/static/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+MEDIA_URL="/media/"
+
+2)))))2nd step in parent urls.py
+
+
+from django.conf import settings
+from django.conf.urls.static import static
+
++static(settings.MEDIA_URL,document_root=settings.MEDIA_URL)
+
+3))) 3rd step: Home page ma
+
+i) html mathi {% load static %}
+ii) link ma: <link rel="stylesheet" href="{% static 'style.css' %}">
+
+
+
+
+
+
+ADMIN:
+
+#Creating Super user and editing Admin page:
+
+1) py manage.py migrate
+2) py manage.py createsuperuser
+3) urls.py from parent folder ma:
+
+admin.site.site_header="Django Header"
+admin.site.site_title="Title "
+admin.site.index_title="Index Title"
+
+
+
+Create MODEL for dynamic Content:
+
+1) model.py ma:
+
+from ckeditor.fields import RichTextField
+# Create your models here.
+class Slider(models.Model):
+    title=models.CharField(max_length=150,unique=True)
+    description=RichTextField()
+    image=models.ImageField(upload_to="Slider")
+    status=models.BooleanField(default=0)
+    created_at=models.DateField()
+    slug=models.CharField(max_length=150,unique=True)
+
+#name of object as title
+def _str_(self):
+	return self.title
+
+
+2) Register the slider in admin.py:
+
+# admin ma list jasta ko tyestai dekhauna
+
+from .models import Slider
+# Register your models here.
+admin.site.register(Slider)
+
+
+# ramro banauna date heru serach filter garne banauna
+
+from .models import Slider
+# Register your models here.
+# admin.site.register(Slider)
+@admin.register(Slider)
+class adminSlider(admin.ModelAdmin):
+    list_display = ['title','status']
+    search_fields = ['title','status']
+    date_hierarchy = 'created_at'
+    prepopulated_fields = {'slug':['title']}
+    list_per_page = 2
+
+
+Slider ko data display in the page:
+
+1) views.py ma 
+
+from .models import Slider
+
+# Create your views here.
+def index(request):
+    data={'sliderData':slider.objects.all()}
+    return render(request,"frontend/pages/home.html",data)
+
+
+2) home.html ma
+
+{% for slider in sliderData %}
+{{slider.title}}
+{{slider.description}}
+<img src="{{slider.image.url}}">
+{% endfor %}
+
+
+
+
+REGISTER AND LOGIN SYSTEM FOR USERS:
+-------------------------------------
+
+1) Nav Bar ma link banaune login and register ko:
+
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'register' %}">Register</a>
+
+2) Make login.html and register.html pages:
+
+login.html
+{% extends 'frontend/master/master.html' %}
+{% block content %}
+<h1> hello Login Page:  </h1>
+{% endblock %}
+
+register.html
+{% extends 'frontend/master/master.html' %}
+{% block content %}
+<h1> hello Regiser Page </h1>
+{% endblock %}
+
+3) url.py ma:
+
+ path('register', views.register, name="register"),
+ path('login', views.login, name="login"),
+
+4) Views.py ma
+......................................................
+from django.shortcuts import render, redirect
+from .models import Slider
+from .forms import UserRegisterForm
+from django.contrib import messages
+
+.......................................................
+def register(request):
+    if request.method=="POST":
+        form=UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Successfully Registered")
+            back = request.META.get('HTTP_REFERER')
+            return redirect(back)
+        else:
+            back = request.META.get('HTTP_REFERER')
+            return redirect(back)
+
+    else:
+        data={
+            'user_form':UserRegisterForm
+        }
+    return render(request,"frontend/pages/register.html",data)
+
+...............................................
+
+def login(request):
+    return render(request,"frontend/pages/login.html")
+
+5) create forms.py in app folder:
+
+from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+class UserRegisterForm(UserCreationForm):
+    email=forms.EmailField()
+    class Meta:
+        model=User
+        fields=['username','password1','password2']
+
+6) Use Crispy Form:
+
+i) pip install it
+2) settings.py ma add app 'crispy_forms'
+3) setting.py ko static ko muni:
+
+CRISPY_TEMPLATE_PACK="bootstrap"
+
+4) register.html ma 
+
+top of block content
+{% load crispy_forms_tags %}
+
+{{user_form|crispy}}
+
+
+7) Register.html:
+
+{% extends 'frontend/master/master.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<h1> hello Regiser Page </h1>
+<forms action="" method="POST">
+    {% csrf_token %}
+    {{user_form|crispy}}
+    <button>Register</button>
+</forms>
+{% endblock %}
+
+8) Displaying Messages at top:
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
