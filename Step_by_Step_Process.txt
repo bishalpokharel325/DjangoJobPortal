@@ -1,0 +1,81 @@
+Dont forget to updated django tutorials
+....................................................................................................
+Step 1: Client Requirements and Project Description:
+1) Client Requirements:
+
+	Client has a website and he needs to post available jobs for his company to match jobs with potential candidates
+
+2) Types of Users and their roles:
+	1) Admin:
+		a) Add new clients
+		b) login into portal
+		c) add new candidates
+		d) assign candidates for jobs
+	2) Client
+		a) Can login into portal
+		b) can add new job
+		c) can edit their old jobs
+		d) look at matches assigned to their jobs, shortlist candidates, select some candidates, candidate no
+3) Types of data:
+	
+	1) Admins:
+		a) Username
+		b) Password
+		
+	2) Clients:
+		a) Username
+		b) Password
+		
+	3) Candidates:
+		a) Name
+		b) Age
+		c) gender
+		d) mobile
+		e) city
+		f) salary Expectation
+		g) willing to Relocate
+	4) Jobs:
+		a) Position Name
+		b) created_at
+		c) Age Criteria
+		d) Salary
+		e) No of Openings
+		f) Descriptions
+		g) Creator of the job opening
+
+............................................................................................................
+
+STEP 2: Lets Start Coding:
+	i) Creating Virutal environment, creating django project named "MainHub" and pushing it in repository
+	ii) cd MainHub and then py manage.py migrate in the terminal
+	iii) py manage.py runserver .. 
+	iv) go to /admin ... the best thing about django is that it has built in admin panel.
+	v) create superuser in another terminal
+	vi) login in into admin panel .. you will see new user there
+
+STEP-3: Add a Client:
+
+	i) Add user in admin panel
+	ii) say domino... 
+	iii) tick checkbox if domino can login to admin site : staff status tick mark
+	iv) open incognito window and try to login into client side //// so we fulfilled first object of client being able to login into admin site page
+
+STEP-4: Create New Database for Job:
+	i) Before creatin model in django we must first create app. there are various apps in the project for modular application. reuse any app if needed
+	ii) So, How many models we need? lets look into the data reqirements. we already taken care of admin and client .. now we need Candidates and Jobs
+	iii) lets make two apps: one for candidates and one for jobs .. first of all create jobs app
+	iv) create class for jobs adding 5 above columns and then register in setting.py
+	v) in addition to various 5 colums we also rrquire creator. which client created the job openeing???
+		creator=models.ForeignKey(User,on_delete=models.CASCADE) 
+	vi) tell python to create a table using makemigration and migrate
+	vii) register the model in admin.py
+		exclude=('creator',)
+
+
+
+
+
+
+
+
+		
