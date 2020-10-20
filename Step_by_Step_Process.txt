@@ -68,8 +68,18 @@ STEP-4: Create New Database for Job:
 	v) in addition to various 5 colums we also rrquire creator. which client created the job openeing???
 		creator=models.ForeignKey(User,on_delete=models.CASCADE) 
 	vi) tell python to create a table using makemigration and migrate
-	vii) register the model in admin.py
-		exclude=('creator',)
+	vii) register the model in admin.py and also prepopulate with user
+
+		exclude=['creator',]
+		 def save_model(self, request, obj, form, change):
+	 	        obj.creator = request.user
+			obj.save()
+	viii) create some jobs and test them.
+	ix) Client Should not be able to see the creater of jobs:
+		make list_display as a function .. define it as get_list_display
+		
+
+STEP-5: Create New DataBase for Candidates. 
 
 
 
