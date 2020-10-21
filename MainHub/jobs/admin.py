@@ -8,6 +8,12 @@ from .models import Job
 class AdminJob(admin.ModelAdmin):
     exclude = ['creator']
 
+    def get_queryset(self, request):
+        if request.user.is_superuser:
+            return Job.objects.all()
+        else:
+            return Job.objects.filter(creator=request.user)
+
     def get_list_display(self, request):
         if request.user.is_superuser:
             return ['position_name', 'created_at', 'creator']

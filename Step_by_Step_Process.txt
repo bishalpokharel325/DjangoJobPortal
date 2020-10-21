@@ -77,6 +77,23 @@ STEP-4: Create New Database for Job:
 	viii) create some jobs and test them.
 	ix) Client Should not be able to see the creater of jobs:
 		make list_display as a function .. define it as get_list_display
+.................................................................................
+		    def get_list_display(self, request):
+        if request.user.is_superuser:
+            return ['position_name', 'created_at', 'creator']
+        else:
+            return ['position_name', 'created_at']
+
+..........................................................
+	x) THere is some issue. Client can see only his own jobs.
+...................................................................	
+	    def get_queryset(self, request):
+        if request.user.is_superuser:
+            return Job.objects.all()
+        else:
+            return Job.objects.filter(creator=request.user)
+.....................................................................
+	
 		
 
 STEP-5: Create New DataBase for Candidates. 
