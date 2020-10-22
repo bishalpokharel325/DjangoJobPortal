@@ -2,11 +2,17 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import Job
+from candidates.models import CandidateJobMap
+
+
+class AdminCandidateJobMap(admin.TabularInline):
+    model = CandidateJobMap
 
 
 @admin.register(Job)
 class AdminJob(admin.ModelAdmin):
     exclude = ['creator']
+    inlines = [AdminCandidateJobMap, ]
 
     def get_queryset(self, request):
         if request.user.is_superuser:

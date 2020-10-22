@@ -31,3 +31,23 @@ class Candidate(models.Model):
 
     def __str__(self):
         return self.name
+
+
+STATUS_ACCEPTED = "ACCEPTED"
+STATUS_REJECTED = "REJECTED"
+STATUS_PENDING = "PENDING"
+STATUS_CHOICES = (
+    (STATUS_ACCEPTED, "ACCEPTED"),
+    (STATUS_REJECTED, 'REJECTED'),
+    (STATUS_PENDING, "PENDING")
+)
+
+
+class CandidateJobMap(models.Model):
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    job = models.ForeignKey('jobs.Job', on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    feedback = models.CharField(max_length=150)
+
+    def __str__(self):
+        return "{} mapping for {}".format(self.candidate.name, self.job.position_name)

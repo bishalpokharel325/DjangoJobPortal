@@ -72,6 +72,7 @@ STEP-4: Create New Database for Job:
 
 		exclude=['creator',]
 		 def save_model(self, request, obj, form, change):
+			if not obj.pk: # only when created not when edited
 	 	        obj.creator = request.user
 			obj.save()
 	viii) create some jobs and test them.
@@ -97,6 +98,52 @@ STEP-4: Create New Database for Job:
 		
 
 STEP-5: Create New DataBase for Candidates. 
+	Repeat same way as jobs and permission for client only to see the candidates
+
+STEP-6: CandidateJobMapping
+	i) in candidate/model.py create new model structure named "CandidateJobMap"
+	ii) to import from candidate table.... 
+		candidate=models.ForiegnKey(Candidate,on_delete=models.CASCADE)
+	iii) How to import job? Can we import from grera?
+		We cant ... circular import huncha 
+		instead k garne vanda... table ko string ko name dene like: 
+	iv)     job=models.ForiegnKey('jobs.Job',on_delete=models.CASCADE)
+	v)	status as option between acepted, rejected and pending
+	vi)	feedback plain text field as optional field blank=True, null=True
+	vii) 	Add string representation as candidate and job
+		self.candidate.name and self,job.position_name
+	viii) makemigrations and migrate
+........................................................................
+	ix) 	Job page mai mapping edit garna mline : using inline Form inline admin
+		in admin.py in job app
+a) class CandidateInline(admin.TabularInline):
+	model=CandidateJobMap
+b) inline=['CandidateInline',] inside register for jobs
+
+x) Clients should be able to see the assignments
+
+a) go to group... job map ... view lai import garne 
+
+xi) Client should be able to change status and feedback not change the new user assignment
+
+class CandidateInline(admin.TabularInline):
+	model=CandidateJobMap
+	def get_readonly_fields()
+		if super user:
+			return []
+		else:
+			return ['candidate']
+
+
+
+
+PART 2:
+
+
+	
+		
+
+	
 
 
 
