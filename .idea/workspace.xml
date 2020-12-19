@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="27cd6ef6-5efa-471a-b3e6-f7749bafdd30" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainHub/candidates/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainHub/candidates/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainHub/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/MainHub/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainHub/jobs/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainHub/jobs/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Step_by_Step_Process.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Step_by_Step_Process.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +26,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../DjangoJobSite" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -44,5 +40,11 @@
       <updated>1603105830114</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1603450818426">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1603450818426" />
   </component>
 </project>

@@ -47,6 +47,8 @@ then, rename the gitignore file:  ren .gitignore.txt .gitignore
 	v) git remote add origin https://github.com/bishalpokharel325/DjangoApplication.git
 	vi) git push -u origin master
 
+*** Clone garna git clone https://github.com/bishalpokharel325/DjangoJobPortal
+
 
 ......................................................................................
 3) Create a New Application:
