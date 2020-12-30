@@ -181,7 +181,7 @@ Create MODEL for dynamic Content:
 from ckeditor.fields import RichTextField
 # Create your models here.
 class Slider(models.Model):
-    title=models.CharField(max_length=150,unique=True)
+    title=models.CharField(max_length=150,unique=True, null=True, blank=True)
     description=RichTextField()
     image=models.ImageField(upload_to="Slider")
     status=models.BooleanField(default=0)
@@ -189,7 +189,7 @@ class Slider(models.Model):
     slug=models.CharField(max_length=150,unique=True)
 
 #name of object as title
-def _str_(self):
+def __str__(self):
 	return self.title
 
 
@@ -217,9 +217,35 @@ class adminSlider(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     prepopulated_fields = {'slug':['title']}
     list_per_page = 2
+
+
+5) image upload huda url specify for media and links
+
+1) product_image = models.ImageField(null=True,blank=True) dont put upload_to
+
+2) setting.py 
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL='/media/'
+
+3)  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+6) Keep user as and object and prepopulate the current user and do not give option
+	step 1: created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, default=1)
+	step 2: in admin.py
+	   exclude = ['created_by']
+
+    def save_model(self, request, obj, form, change):
+        obj.created_by = request.user
+        obj.save()
+
+	step 3: 
+
 .......................................................................
 
 9) Slider ko data display in the page:
+....................................................................
 
 1) views.py ma 
 
@@ -236,8 +262,49 @@ def index(request):
 {% for slider in sliderData %}
 {{slider.title}}
 {{slider.description}}
-<img src="{{slider.image.url}}">
+<a href=""{{slider.image.url}}></a><img src="{{slider.image.url}}">
 {% endfor %}
+
+.....................................
+10) Handling Requests:
+
+suppose we have ecommerce website with products displaying in home page
+we need to make a program where when we click category: shoe button we get products with category shoe
+
+1) in html a tag 
+
+{% for category in categoryData %}
+<a class="btn btn-primary" href="/?category={{category.id}}" role="button">{{category.category_name}}</a>
+{% endfor %}
+
+2) inside def index(request): get that query from buttons
+print(request.GET) 
+test these and learn:
+i) 	?orderBy=price&category=2 
+	print(request.GET.get("category"))
+	print(request.GET.get("orderBy"))
+ii) 
+	def index(request):
+    categoryID=request.GET.get('category')
+    if categoryID:
+        all_products=Product.objects.filter(product_category=categoryID)
+    else:
+        all_products=Product.objects.all()
+    all_Category=Category.objects.all()
+    context = {
+        'productData': all_products,
+        'categoryData':all_Category,
+    }
+    return render(request, "frontend/pages/home.html", context)
+
+iii) Add all button to show all products and also show product when home is refreshed
+
+
+<a class="btn btn-primary" href="/" role="button">ALL</a>
+
+
+
+
 
 
 

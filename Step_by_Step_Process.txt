@@ -61,7 +61,7 @@ STEP-3: Add a Client:
 	iv) open incognito window and try to login into client side //// so we fulfilled first object of client being able to login into admin site page
 
 STEP-4: Create New Database for Job:
-	i) Before creatin model in django we must first create app. there are various apps in the project for modular application. reuse any app if needed
+	i) Before creating model in django we must first create app. there are various apps in the project for modular application. reuse any app if needed
 	ii) So, How many models we need? lets look into the data reqirements. we already taken care of admin and client .. now we need Candidates and Jobs
 	iii) lets make two apps: one for candidates and one for jobs .. first of all create jobs app
 	iv) create class for jobs adding 5 above columns and then register in setting.py
